@@ -1,0 +1,85 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  clerkId   String   @unique
+  email     String   @unique
+  username  String?
+  firstName String?
+  lastName  String?
+  imageUrl  String?
+  
+  // Profile fields
+  bio       String?
+  university String?
+  whatsapp  String?
+  instagram String?
+  facebook  String?
+  
+  // Status
+  isVerified Boolean @default(false)
+  isActive   Boolean @default(true)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  listings  Listing[]
+  
+  @@map("users")
+}
+
+model Listing {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Int      // Price in Ksh (cents)
+  type        ListingType @default(PRODUCT)
+  condition   Condition?  // Only for products
+  
+  // Images
+  images      String[] // Array of ImageKit URLs
+  
+  // Status
+  status      ListingStatus @default(ACTIVE)
+  
+  // Timestamps
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("listings")
+}
+
+enum ListingType {
+  PRODUCT
+  SERVICE
+}
+
+enum Condition {
+  NEW
+  LIKE_NEW
+  GOOD
+  FAIR
+}
+
+enum ListingStatus {
+  ACTIVE
+  DRAFT
+  SOLD
+  ARCHIVED
+}
