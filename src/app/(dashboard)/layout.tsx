@@ -110,12 +110,12 @@ export default function DashboardLayout({
                   <span className="font-medium">Help & Support</span>
                 </Link>
                 
-                <UserButton afterSignOutUrl="/" signOutCallback={handleSignOut}>
+                { /*<UserButton afterSignOutUrl="/" signOutCallback={handleSignOut}>
                   <div className="flex items-center space-x-3 px-4 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer w-full">
                     <LogOut className="w-5 h-5" />
                     <span className="font-medium">Sign Out</span>
                   </div>
-                </UserButton>
+                </UserButton> */}
               </div>
             </div>
           </div>
