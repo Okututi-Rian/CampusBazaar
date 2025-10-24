@@ -16,7 +16,7 @@ import {
   TrendingUp
 } from 'lucide-react'
 import { Button } from '../../components/ui/button'
-import { UserButton } from '@clerk/nextjs'
+import { UserButton, useClerk } from '@clerk/nextjs'
 import { useToast } from '../../components/ui/use-toast'
 
 export default function DashboardLayout({
@@ -27,6 +27,7 @@ export default function DashboardLayout({
   const pathname = usePathname()
   const { toast } = useToast()
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const { signOut } = useClerk()
 
   const navigation = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
@@ -36,11 +37,12 @@ export default function DashboardLayout({
     { name: 'Upcoming Features', href: '/upcoming-features', icon: TrendingUp },
   ]
 
-  const handleSignOut = () => {
+  const handleSignOut = async () => {
     toast({
       title: 'Signed out successfully',
       description: 'Come back soon!',
     })
+    await signOut({ redirectUrl: '/' })
   }
 
   return (
@@ -110,12 +112,14 @@ export default function DashboardLayout({
                   <span className="font-medium">Help & Support</span>
                 </Link>
                 
-                <UserButton afterSignOutUrl="/" >{/*signOutCallback={handleSignOut}>*/}
-                  <div className="flex items-center space-x-3 px-4 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors cursor-pointer w-full">
-                    <LogOut className="w-5 h-5" />
-                    <span className="font-medium">Sign Out</span>
-                  </div>
-                </UserButton> 
+                {/* Custom sign out button */}
+                <button
+                  onClick={handleSignOut}
+                  className="flex items-center space-x-3 px-4 py-2 text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors w-full"
+                >
+                  <LogOut className="w-5 h-5" />
+                  <span className="font-medium">Sign Out</span>
+                </button>
               </div>
             </div>
           </div>
