@@ -38,7 +38,7 @@ export async function uploadImage(
       tags: ['campus-bazaar'],
     })
     
-    return response as UploadResponse
+    return response as unknown as UploadResponse
   } catch (error) {
     console.error('Image upload failed:', error)
     throw new Error('Failed to upload image')
